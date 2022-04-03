@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     private void ScaleStuff()
     {
-        _sprite.flipX = _rb.velocity.x > 0;
+        _sprite.flipX = _rb.velocity.x < 0;
         float test = Mathf.Abs(_rb.velocity.x) - Mathf.Abs(_rb.velocity.y);
         float scaleX = test > 0 ? Mathf.Lerp(1, xScale[0], test / xScale[1]) : 1f;
         float scaleY = test < 0 ? Mathf.Lerp(1, yScale[0], -test / yScale[1]) : 1f;

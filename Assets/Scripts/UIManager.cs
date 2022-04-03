@@ -7,7 +7,7 @@ using System.Globalization;
 
 public class UIManager : MonoBehaviour
 {
-    public TextMeshProUGUI TimerText;
+    public Text TimerText;
     public Image AvailableGustImg;
 
     private void Update()
