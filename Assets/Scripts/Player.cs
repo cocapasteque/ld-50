@@ -103,6 +103,7 @@ public class Player : MonoBehaviour
 
     private void LoseLife()
     {
+        StartCoroutine(Invincibility());
         _lives--;
         if (_lives >= 0)
         {
