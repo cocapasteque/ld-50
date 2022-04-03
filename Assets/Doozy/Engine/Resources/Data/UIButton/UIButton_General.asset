@@ -16,4 +16,7 @@ MonoBehaviour:
   DatabaseType: 0
   Names:
   - Back
+  - Credits
+  - Ranking
+  - Start
   - Unnamed
