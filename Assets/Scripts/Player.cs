@@ -13,11 +13,16 @@ public class Player : MonoBehaviour
     public Vector2 xScale;
     public Vector2 yScale;
 
+    public List<Sprite> Sprites;
+    public float InvincibilityDuration = 1f;
+
     private Camera _cam;
     private bool _mouseDown = false;
     private Rigidbody2D _rb;
     private Vector3 _baseScale;
     private SpriteRenderer _sprite;
+    private int _lives;
+    private bool _invincible;
 
     private void Awake()
     {
@@ -31,11 +36,14 @@ public class Player : MonoBehaviour
     {
         _rb.velocity = Vector2.zero;
         transform.position = Vector2.zero;
+        _lives = 2;
+        _sprite.sprite = Sprites[_lives];
+        _invincible = false;
     }
 
     private void ScaleStuff()
     {
-        _sprite.flipX = _rb.velocity.x < 0;
+        _sprite.flipX = _rb.velocity.x > 0;
         float test = Mathf.Abs(_rb.velocity.x) - Mathf.Abs(_rb.velocity.y);
         float scaleX = test > 0 ? Mathf.Lerp(1, xScale[0], test / xScale[1]) : 1f;
         float scaleY = test < 0 ? Mathf.Lerp(1, yScale[0], -test / yScale[1]) : 1f;
@@ -84,12 +92,31 @@ public class Player : MonoBehaviour
         switch (collision.tag)
         {
             case "Enemy":
-                GameOver(true);
+                if (!_invincible)
+                    LoseLife();
                 break;
             default:
                 Debug.Log(collision.tag);
                 break;
         }
+    }
+
+    private void LoseLife()
+    {
+        _lives--;
+        if (_lives >= 0)
+        {
+            _sprite.sprite = Sprites[_lives];
+        }
+        else
+            GameOver();
+    }
+
+    private IEnumerator Invincibility()
+    {
+        _invincible = true;
+        yield return new WaitForSeconds(InvincibilityDuration);
+        _invincible = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -98,7 +125,9 @@ public class Player : MonoBehaviour
             GameOver();
     }
 
-    private void GameOver(bool pop = false)
+
+
+    private void GameOver()
     {
         Debug.Log("Game Over");
         GameManager.Instance.GameOver();
