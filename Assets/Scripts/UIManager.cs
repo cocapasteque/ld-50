@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     private void UpdateTimer()
     {       
         int minutes = (int)GameManager.Instance.timer / 60;
-        TimerText.text = $"{minutes}:{(GameManager.Instance.timer - minutes).ToString("00.###", CultureInfo.InvariantCulture)}";
+        TimerText.text = $"{minutes}:{(GameManager.Instance.timer - 60f * minutes).ToString("00.###", CultureInfo.InvariantCulture)}";
     }
 
     private void UpdateGustBar()

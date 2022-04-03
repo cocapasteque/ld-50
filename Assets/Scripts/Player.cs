@@ -10,15 +10,21 @@ public class Player : MonoBehaviour
     public float GustDrainFactor;
     public float GustRechargeFactor;
 
+    public Vector2 xScale;
+    public Vector2 yScale;
 
     private Camera _cam;
     private bool _mouseDown = false;
     private Rigidbody2D _rb;
+    private Vector3 _baseScale;
+    private SpriteRenderer _sprite;
 
     private void Awake()
     {
         _cam = Camera.main;
         _rb = GetComponent<Rigidbody2D>();
+        _baseScale = transform.localScale;
+        _sprite = GetComponent<SpriteRenderer>();
     }
 
     public void Init()
@@ -27,8 +33,19 @@ public class Player : MonoBehaviour
         transform.position = Vector2.zero;
     }
 
+    private void ScaleStuff()
+    {
+        _sprite.flipX = _rb.velocity.x > 0;
+        float test = Mathf.Abs(_rb.velocity.x) - Mathf.Abs(_rb.velocity.y);
+        float scaleX = test > 0 ? Mathf.Lerp(1, xScale[0], test / xScale[1]) : 1f;
+        float scaleY = test < 0 ? Mathf.Lerp(1, yScale[0], -test / yScale[1]) : 1f;
+        
+        transform.localScale = new Vector2(_baseScale.x * scaleX, _baseScale.y * scaleY);
+    }
+
     void Update()
-    {       
+    {
+        ScaleStuff();
         if (Input.GetMouseButtonDown(0))
         {           
             _mouseDown = true;

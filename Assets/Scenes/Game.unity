@@ -385,7 +385,30 @@ MonoBehaviour:
     Max2: {fileID: 1545411567}
   Prefabs:
   - {fileID: 4736928267085187142, guid: ee0ea3687deb2064cb0140d4279af559, type: 3}
-  Cooldown: 2
+  Cooldown:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 3
+      inSlope: -0.20963469
+      outSlope: -0.20963469
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.035159327
+    - serializedVersion: 3
+      time: 20
+      value: 1.4960938
+      inSlope: -0.010903517
+      outSlope: -0.010903517
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.057796765
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &225212378
 Transform:
   m_ObjectHideFlags: 0
@@ -904,8 +927,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1034785460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2836, y: -0.1737, z: 0}
-  m_LocalScale: {x: 0.103845626, y: 0.08952369, z: 1}
+  m_LocalPosition: {x: 0.2789, y: -0.1737, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.09, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -948,6 +971,8 @@ MonoBehaviour:
   AvailableGust: 1
   GustDrainFactor: 0.4
   GustRechargeFactor: 0.6
+  xScale: {x: 0.92, y: 1.5}
+  yScale: {x: 0.92, y: 1.5}
 --- !u!1 &1330291143
 GameObject:
   m_ObjectHideFlags: 0
@@ -1959,6 +1984,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerObj: {fileID: 1034785465}
+  Spawners:
+  - {fileID: 225212377}
 --- !u!4 &2028046080
 Transform:
   m_ObjectHideFlags: 0

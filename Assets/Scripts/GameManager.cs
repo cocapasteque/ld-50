@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public Player PlayerObj;
+    public List<ObjectSpawner> Spawners;
 
     public float timer { get; private set; }
     public bool running { get; private set; }
@@ -38,6 +39,10 @@ public class GameManager : MonoBehaviour
         timer = 0f;
         running = true;
         PlayerObj.Init();
+        foreach(var spawner in Spawners)
+        {
+            spawner.Init();
+        }
     }
 
     public void GameOver()
