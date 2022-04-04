@@ -1621,8 +1621,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -87}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.5708, y: 30.885681}
-  m_SizeDelta: {x: 1014.8115, y: 226.5658}
+  m_AnchoredPosition: {x: 22.8506, y: 31.0575}
+  m_SizeDelta: {x: 1014.8115, y: 311.4906}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &288820288
 MonoBehaviour:
@@ -1659,7 +1659,6 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Oh no! A lot of sharp and evil things try to prevent you from keeping
     your favorite balloon off the ground.
-
 
 
     Create gusts of wind by clicking
@@ -6242,8 +6241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.6456, y: 249.5268}
-  m_SizeDelta: {x: 564.1711, y: 1328.7783}
+  m_AnchoredPosition: {x: -11.6456, y: 259.8037}
+  m_SizeDelta: {x: 584.7248, y: 1328.7783}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1227785055
 MonoBehaviour:
