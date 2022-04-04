@@ -23,9 +23,9 @@ public class TackSpawner : ObjectSpawner
                 Vector2.Lerp(Spawns[spawnPairIndex].Min2.position, Spawns[spawnPairIndex].Max2.position, Random.Range(0f, 1f));
 
             Quaternion spawnRot = Quaternion.Euler(new Vector3(0f, 0f, Vector2.SignedAngle(Vector2.right, targetPos - spawnPos)));
-
+            
             var obj = Instantiate(Prefabs[Random.Range(0, Prefabs.Count)], spawnPos, spawnRot);
-
+            Destroy(obj, 10f);
             if (spawnPos.x > targetPos.x)
             {
                 obj.GetComponent<SpriteRenderer>().flipY = true;

@@ -23,9 +23,13 @@ public class Player : MonoBehaviour
     private SpriteRenderer _sprite;
     private int _lives;
     private bool _invincible;
+    private Vector3 _baseGustScale;
+    private float _gravity;
+    private bool _gameOver;
 
     public Animator GustAnim;
     public Transform GustEffect;
+    public float GustScaleModifier;
 
     private void Awake()
     {
@@ -33,15 +37,22 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _baseScale = transform.localScale;
         _sprite = GetComponent<SpriteRenderer>();
+        _baseGustScale = GustEffect.localScale;
+        _gravity = _rb.gravityScale;
+        _rb.gravityScale = 0f;
     }
 
     public void Init()
     {
+        _rb.gravityScale = _gravity;
         _rb.velocity = Vector2.zero;
         transform.position = Vector2.zero;
         _lives = 2;
         _sprite.sprite = Sprites[_lives];
         _invincible = false;
+        _mouseDown = false;
+        _gameOver = false;
+        AvailableGust = 1f;
     }
 
     private void ScaleStuff()
@@ -56,31 +67,34 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        ScaleStuff();
-        if (Input.GetMouseButtonDown(0))
-        {           
-            _mouseDown = true;
-        }
-
-        if (_mouseDown)
+        if (GameManager.Instance.running)
         {
-            if (AvailableGust > 0)
+            ScaleStuff();
+            if (Input.GetMouseButtonDown(0))
             {
-                GustStrength += Time.deltaTime;
-                AvailableGust = Mathf.Clamp01(AvailableGust - GustDrainFactor * Time.deltaTime);
+                _mouseDown = true;
+            }
+
+            if (_mouseDown)
+            {
+                if (AvailableGust > 0)
+                {
+                    GustStrength += Time.deltaTime;
+                    AvailableGust = Mathf.Clamp01(AvailableGust - GustDrainFactor * Time.deltaTime);
+                }
+            }
+            else
+            {
+                AvailableGust = Mathf.Clamp01(AvailableGust + GustRechargeFactor * Time.deltaTime);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                _mouseDown = false;
+                CastWind(_cam.ScreenToWorldPoint(Input.mousePosition));
+                GustStrength = 0f;
             }
         }
-        else
-        {
-            AvailableGust = Mathf.Clamp01(AvailableGust + GustRechargeFactor * Time.deltaTime);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            _mouseDown = false;
-            CastWind(_cam.ScreenToWorldPoint(Input.mousePosition));
-            GustStrength = 0f;
-        }        
     }
 
     public void CastWind(Vector2 pos)
@@ -94,6 +108,8 @@ public class Player : MonoBehaviour
         Vector2 diff = ((Vector2)transform.position - pos);
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         GustEffect.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
+        GustEffect.localScale = _baseGustScale * (1 + (GustScaleModifier * GustStrength)); 
     }
 
 
@@ -119,8 +135,8 @@ public class Player : MonoBehaviour
         {
             _sprite.sprite = Sprites[_lives];
         }
-        else
-            GameOver();
+        else if (!_gameOver)
+            GameOver(true);
     }
 
     private IEnumerator Invincibility()
@@ -132,15 +148,14 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Floor")
-            GameOver();
+        if (collision.gameObject.tag == "Floor" && !_gameOver)
+            GameOver(false);
     }
 
-
-
-    private void GameOver()
+    private void GameOver (bool pop)
     {
-        Debug.Log("Game Over");
-        GameManager.Instance.GameOver();
+        _gameOver = true;
+        GameManager.Instance.GameOver(pop);
+        _invincible = true;
     }
 }

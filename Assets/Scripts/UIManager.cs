@@ -12,8 +12,11 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateTimer();
-        UpdateGustBar();
+        if (GameManager.Instance.running)
+        {
+            UpdateTimer();
+            UpdateGustBar();
+        }
     }
 
     private void UpdateTimer()

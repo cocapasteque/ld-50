@@ -13,6 +13,10 @@ public abstract class ObjectSpawner : MonoBehaviour
         Spawn();
     }
 
-    protected abstract void Spawn();
+    public void Stop()
+    {
+        StopAllCoroutines();
+    }
 
+    protected abstract void Spawn();
 }
