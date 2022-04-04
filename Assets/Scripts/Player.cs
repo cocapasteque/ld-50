@@ -136,7 +136,10 @@ public class Player : MonoBehaviour
             _sprite.sprite = Sprites[_lives];
         }
         else if (!_gameOver)
+        {
+            _sprite.sprite = null;
             GameOver(true);
+        }
     }
 
     private IEnumerator Invincibility()
