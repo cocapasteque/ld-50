@@ -15,9 +15,11 @@ MonoBehaviour:
   CategoryName: General
   DatabaseType: 2
   Names:
+  - Background
   - Buttons
   - Credits
   - End
+  - Name
   - Ranking
   - Start
   - Unnamed

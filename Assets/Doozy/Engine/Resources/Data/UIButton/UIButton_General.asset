@@ -16,6 +16,7 @@ MonoBehaviour:
   DatabaseType: 0
   Names:
   - Back
+  - ConfirmName
   - Credits
   - Exit
   - Ranking
