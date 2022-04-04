@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    private Camera _cam;
+    private float _regularCamSize = 6f;
+    private const float _regularAspect = 16f / 9f;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -31,7 +35,13 @@ public class GameManager : MonoBehaviour
         else
         {
             Instance = this;
-        }       
+        }
+        _cam = Camera.main;
+        var currentAspect = (float)Screen.width / Screen.height;
+        if (currentAspect < _regularAspect)
+        {
+            _cam.orthographicSize = (_regularAspect / currentAspect) * _regularCamSize;
+        }
     }
 
     private void Update()
