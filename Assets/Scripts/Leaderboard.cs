@@ -1,6 +1,8 @@
+using System;
 using Newtonsoft.Json;
 using Proyecto26;
 using RSG;
+using UnityEngine;
 
 public class Leaderboard
 {
@@ -8,7 +10,7 @@ public class Leaderboard
 
     public static IPromise<BoardEntry[]> GetLeaderboard()
     {
-        return RestClient.Get<BoardEntry[]>(api);
+        return RestClient.GetArray<BoardEntry>(api);
     }
 
     public static IPromise<BoardEntry> GetOwn(string name)
@@ -22,8 +24,10 @@ public class Leaderboard
     }
 }
 
+[Serializable]
 public class BoardEntry
 {
-    [JsonProperty("name")] public string Name { get; set; }
-    [JsonProperty("score")] public float Score { get; set; }
+    [JsonProperty("id")] public int id;
+    [JsonProperty("name")] public string name;
+    [JsonProperty("score")] public float score;
 }
