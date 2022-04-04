@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     private int _lives;
     private bool _invincible;
 
+    public Animator GustAnim;
+    public Transform GustEffect;
+
     private void Awake()
     {
         _cam = Camera.main;
@@ -84,6 +87,13 @@ public class Player : MonoBehaviour
     {
         float distance = Mathf.Clamp(Vector2.Distance(pos, transform.position), 0.5f, float.MaxValue);
         _rb.AddForce(((Vector2)transform.position - pos).normalized * GustStrength * GustFactor / distance, ForceMode2D.Impulse);
+        
+        GustAnim.SetTrigger("Gust");
+        GustEffect.position = pos;
+
+        Vector2 diff = ((Vector2)transform.position - pos);
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        GustEffect.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
     }
 
 
