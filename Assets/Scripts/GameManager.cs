@@ -68,7 +68,12 @@ public class GameManager : MonoBehaviour
             spawner.Stop();
         }
         running = false;
+        UIManager.UpdateTimer();
         GameEventMessage.SendEvent("GameOver");
         GameOverText.text = (pop ? PopText : FloorText) + (timer < 4f ? "\n" + FloorHintText : "") + $"\n\n You endured for {UIManager.TimerText.text} " + (timer > 4f ? "\n Good job!" : "");
+        BoardEntry entry = new BoardEntry();
+        entry.name = NameManager.Instance.Name;
+        entry.score = timer;
+        Leaderboard.SendScore(entry);
     }
 }
