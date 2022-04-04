@@ -27,8 +27,9 @@ public class RankingManager : MonoBehaviour
             var minutes = (int)res.score / 60;
             PersonalRank.Name.text = res.name;
             PersonalRank.Time.text = $"{minutes}:{(res.score - 60f * minutes).ToString("00.###", CultureInfo.InvariantCulture)}";
-
-            if (res.id == 0)
+            PersonalRank.RankNr.text = $"{res.id + 1}";
+            
+            if (res.id == -1)
             {
                 PersonalRank.RankNr.text = "-";
             }
