@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public int MaxLives = 2;
+
     public float GustStrength;
     public float GustFactor = 1f;
     public float AvailableGust = 1f;
     public float GustDrainFactor;
-    public float GustRechargeFactor;
+    public float GustRechargeFactor;   
 
     public Vector2 xScale;
     public Vector2 yScale;
@@ -26,10 +28,13 @@ public class Player : MonoBehaviour
     private Vector3 _baseGustScale;
     private float _gravity;
     private bool _gameOver;
+    private Vector2 _startPos;
 
     public Animator GustAnim;
     public Transform GustEffect;
     public float GustScaleModifier;
+
+    private bool _canUseMouse;
 
     private void Awake()
     {
@@ -40,14 +45,16 @@ public class Player : MonoBehaviour
         _baseGustScale = GustEffect.localScale;
         _gravity = _rb.gravityScale;
         _rb.gravityScale = 0f;
+        _startPos = transform.position;
+        _canUseMouse = Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.IPhonePlayer && Input.mousePresent;
     }
 
     public void Init()
     {
         _rb.gravityScale = _gravity;
         _rb.velocity = Vector2.zero;
-        transform.position = Vector2.zero;
-        _lives = 2;
+        transform.position = _startPos;
+        _lives = MaxLives;
         _sprite.sprite = Sprites[_lives];
         _invincible = false;
         _mouseDown = false;
@@ -70,30 +77,68 @@ public class Player : MonoBehaviour
         if (GameManager.Instance.running)
         {
             ScaleStuff();
-            if (Input.GetMouseButtonDown(0))
-            {
-                _mouseDown = true;
-            }
 
-            if (_mouseDown)
-            {
-                if (AvailableGust > 0)
-                {
-                    GustStrength += Time.deltaTime;
-                    AvailableGust = Mathf.Clamp01(AvailableGust - GustDrainFactor * Time.deltaTime);
-                }
-            }
+            if (_canUseMouse)
+                UpdateWithMouse();
             else
-            {
-                AvailableGust = Mathf.Clamp01(AvailableGust + GustRechargeFactor * Time.deltaTime);
-            }
+                UpdateWithTouch();         
+        }
+    }
 
-            if (Input.GetMouseButtonUp(0))
+    private void UpdateWithMouse()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            _mouseDown = true;
+        }
+
+        if (_mouseDown)
+        {
+            if (AvailableGust > 0)
             {
-                _mouseDown = false;
-                CastWind(_cam.ScreenToWorldPoint(Input.mousePosition));
-                GustStrength = 0f;
+                GustStrength += Time.deltaTime;
+                AvailableGust = Mathf.Clamp01(AvailableGust - GustDrainFactor * Time.deltaTime);
             }
+        }
+        else
+        {
+            AvailableGust = Mathf.Clamp01(AvailableGust + GustRechargeFactor * Time.deltaTime);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            _mouseDown = false;
+            CastWind(_cam.ScreenToWorldPoint(Input.mousePosition));
+            GustStrength = 0f;
+        }
+    }
+
+    private void UpdateWithTouch()
+    {
+     
+        if (Input.touchCount > 0)
+        {
+            _mouseDown = true;
+        }
+
+        if (_mouseDown)
+        {
+            if (AvailableGust > 0)
+            {
+                GustStrength += Time.deltaTime;
+                AvailableGust = Mathf.Clamp01(AvailableGust - GustDrainFactor * Time.deltaTime);
+            }
+        }
+        else
+        {
+            AvailableGust = Mathf.Clamp01(AvailableGust + GustRechargeFactor * Time.deltaTime);
+        }
+
+        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Ended)
+        {
+            _mouseDown = false;
+            CastWind(_cam.ScreenToWorldPoint(Input.touches[0].position));
+            GustStrength = 0f;
         }
     }
 
